@@ -228,14 +228,14 @@ app.get("/drugs/names", (req, res)=>{
 // Number 3
 app.post("/drugs/by-category", (req, res)=>{
     const category = req.body.category
-     const categoryAntacid = drugs.filter(drug =>
-        drug.category === "Antacid")
-        res.json(categoryAntacid)
+    const check = drugs.find(drug => drug.category.toLocaleLowerCase() === category.toLocaleLowerCase())
 
-        if (!category) {
-            return res.json("This drug is not Antacid")
-        }
-
+    if (!check) {
+        res.json(`There is a problem, make sure you confirm your spellings and try again`)
+    } else {
+        const drugsCategory = drugs.filter(drug => drug.category.toLocaleLowerCase() === category.toLocaleLowerCase())
+            res.json(drugsCategory)
+    }   
 })
 
 // Number 4
@@ -282,9 +282,14 @@ app.get("/drugs/non-prescription", (req,res) =>{
 // Number 9
 app.post("/drugs/manufacturer-count", (req, res) =>{
     const manufacturer = req.body.manufacturer
-    const manufacturerCount = drugs.filter(drug =>
-        drug.manufacturer === "Teva").length;
-        res.json(`${manufacturerCount} drugs are manufactured by Teva`)
+    const search = drugs.find(drug => drug.manufacturer.toLocaleUpperCase() === manufacturer.toLocaleUpperCase())
+    if (!search) {
+         res.json(`Check your spellings and try again`)
+    } else {
+        const manufacturerCount = drugs.filter(drug =>
+            drug.manufacturer.toLocaleUpperCase() === manufacturer.toLocaleUpperCase()).length;
+            res.json(`${manufacturerCount} drugs are manufactured by this manufacturer`)
+    }
 })
 
 // Number 10
@@ -296,15 +301,3 @@ app.get("/drugs/count-analgesics", (req, res) =>{
 
 
    
-   
-
-app.post("/add-user",(req, res)=>{
-    const userA = req.body
-    res.json({
-        message: "Use jkfjldll  xnlkjl; xknklr",
-        userA
-    })
-})
-
-// GET, POST, PUT, PATCH, DELETE
-// Endpoints
